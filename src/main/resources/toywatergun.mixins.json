@@ -3,7 +3,7 @@
 	"package": "io.github.yo56789.toywatergun.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"CauldronBehaviorMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
