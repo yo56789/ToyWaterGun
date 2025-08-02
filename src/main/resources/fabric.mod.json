@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "toywatergun",
+	"version": "${version}",
+	"name": "Toy Water Gun",
+	"description": "Adds a toy water gun able to shoot any liquid",
+	"authors": [
+		"yo56789"
+	],
+	"contact": {
+		"homepage": "",
+		"sources": "",
+		"issues": ""
+	},
+	"license": "MIT",
+	"icon": "assets/toywatergun/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"io.github.yo56789.toywatergun.ToyWaterGun"
+		]
+	},
+	"mixins": [
+		"toywatergun.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.21.8",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
