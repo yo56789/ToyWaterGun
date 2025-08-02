@@ -8,9 +8,9 @@
 		"yo56789"
 	],
 	"contact": {
-		"homepage": "",
-		"sources": "",
-		"issues": ""
+		"homepage": "https://modrinth.com/project/toy-water-gun",
+		"sources": "https://github.com/yo56789/ToyWaterGun",
+		"issues": "https://github.com/yo56789/ToyWaterGun/issues"
 	},
 	"license": "MIT",
 	"icon": "assets/toywatergun/icon.png",
