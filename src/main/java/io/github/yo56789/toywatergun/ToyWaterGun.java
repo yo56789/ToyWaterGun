@@ -1,6 +1,7 @@
 package io.github.yo56789.toywatergun;
 
-import io.github.yo56789.toywatergun.item.ToyWaterGunItems;
+import io.github.yo56789.toywatergun.entity.TWGEntities;
+import io.github.yo56789.toywatergun.item.TWGItems;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ public class ToyWaterGun implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Initialising");
-		ToyWaterGunItems.init();
+		TWGItems.init();
+		TWGEntities.init();
 	}
 }

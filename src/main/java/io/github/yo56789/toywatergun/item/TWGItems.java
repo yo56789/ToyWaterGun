@@ -16,7 +16,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.function.Function;
 
-public class ToyWaterGunItems {
+public class TWGItems {
 
     public static final WaterGunItem WATER_GUN = register("water_gun", WaterGunItem::new, new Item.Settings());
 
