@@ -1,8 +1,6 @@
 package io.github.yo56789.toywatergun.entity;
 
-import io.github.yo56789.toywatergun.ToyWaterGun;
 import net.minecraft.entity.EntityType;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
@@ -31,8 +29,7 @@ public class WaterProjectile extends ProjectileBase {
 
     @Override
     protected void onBlockHit(BlockHitResult hitResult) {
-        World world = this.getWorld();
-        if (world instanceof ServerWorld serverWorld) {
+        if (!this.getWorld().isClient()) {
             this.getWorld().sendEntityStatus(this, (byte) 3);
             this.discard();
         }

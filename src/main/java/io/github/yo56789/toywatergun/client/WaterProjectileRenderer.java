@@ -1,5 +1,6 @@
 package io.github.yo56789.toywatergun.client;
 
+import io.github.yo56789.toywatergun.ToyWaterGun;
 import io.github.yo56789.toywatergun.entity.WaterProjectile;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -9,8 +10,6 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.model.ArrowEntityModel;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.state.ProjectileEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -18,12 +17,12 @@ import net.minecraft.util.math.RotationAxis;
 
 @Environment(EnvType.CLIENT)
 public class WaterProjectileRenderer extends EntityRenderer<WaterProjectile, ProjectileEntityRenderState> {
-    private final ArrowEntityModel model;
-    public static final Identifier TEXTURE = Identifier.ofVanilla("textures/entity/projectiles/arrow.png");
+    private final WaterProjectileModel model;
+    public static final Identifier TEXTURE = Identifier.of(ToyWaterGun.MOD_ID, "textures/entity/water_projectile.png");
 
     protected WaterProjectileRenderer(EntityRendererFactory.Context context) {
         super(context);
-        this.model = new ArrowEntityModel(context.getPart(EntityModelLayers.ARROW));
+        this.model = new WaterProjectileModel(context.getPart(TWGClient.WATER_PROJECTILE_LAYER));
     }
 
     @Override
