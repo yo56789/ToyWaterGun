@@ -1,6 +1,9 @@
 {
 	"model": {
-		"type": "minecraft:model",
-		"model": "toywatergun:item/water_gun"
+		"type": "minecraft:special",
+		"base": "toywatergun:item/water_gun",
+		"model": {
+			"type": "geckolib:geckolib"
+		}
 	}
 }

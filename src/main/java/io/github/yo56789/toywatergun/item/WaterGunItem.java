@@ -1,9 +1,9 @@
 package io.github.yo56789.toywatergun.item;
 
+import io.github.yo56789.toywatergun.client.model.WaterGunRenderer;
 import io.github.yo56789.toywatergun.entity.WaterProjectile;
 import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.*;
 import net.minecraft.item.tooltip.TooltipType;
@@ -12,12 +12,27 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animatable.manager.AnimatableManager;
+import software.bernie.geckolib.animatable.processing.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.renderer.GeoItemRenderer;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class WaterGunItem extends Item {
+public class WaterGunItem extends Item implements GeoItem {
+
+    private static final RawAnimation ACTIVATE_ANIM = RawAnimation.begin().thenPlay("water_gun.charge");
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
     public WaterGunItem(Settings settings) {
         super(settings);
+
+        GeoItem.registerSyncedAnimatable(this);
     }
 
     @Override
@@ -36,7 +51,10 @@ public class WaterGunItem extends Item {
             }
 
             stack.set(TWGItems.CHARGE_COMPONENT, Math.clamp(charge + 4, 0, 20));
-            player.getItemCooldownManager().set(stack, 60);
+            triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerWorld) world), "Activation", "charge");
+            player.getItemCooldownManager().set(stack, 40);
+
+            return ActionResult.SUCCESS;
         }
 
         if (!player.getItemCooldownManager().isCoolingDown(stack) && fluid >= 25) {
@@ -50,6 +68,8 @@ public class WaterGunItem extends Item {
             ProjectileEntity.spawn(projectile, (ServerWorld) world, arrow.getDefaultStack());
 
             player.getItemCooldownManager().set(stack, 5);
+
+            return ActionResult.SUCCESS;
         }
 
         return ActionResult.SUCCESS;
@@ -62,5 +82,30 @@ public class WaterGunItem extends Item {
 
         textConsumer.accept(Text.translatable("item.toywatergun.water_gun.charge", charge));
         textConsumer.accept(Text.translatable("item.toywatergun.water_gun.remaining", remaining));
+    }
+
+    @Override
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
+            private WaterGunRenderer renderer;
+
+            @Override
+            public GeoItemRenderer<?> getGeoItemRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new WaterGunRenderer();
+
+                return this.renderer;
+            }
+        });
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>("Activation", 0, animTest -> PlayState.STOP).triggerableAnim("charge", ACTIVATE_ANIM));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
     }
 }
