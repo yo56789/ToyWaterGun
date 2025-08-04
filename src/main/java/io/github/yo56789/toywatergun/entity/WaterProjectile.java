@@ -4,10 +4,13 @@ import net.minecraft.block.AbstractCandleBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.entity.EntityType;
+import net.minecraft.particle.TrailParticleEffect;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.util.Colors;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class WaterProjectile extends ProjectileBase {
@@ -18,6 +21,13 @@ public class WaterProjectile extends ProjectileBase {
 
     public WaterProjectile(World world, double x, double y, double z) {
         super(TWGEntities.WATER_PROJECTILE_TYPE, world, x, y,z);
+    }
+
+    @Override
+    protected void spawnParticles(Vec3d velo) {
+        for (int i = 0; i < 8; i++) {
+            this.getWorld().addParticleClient(new TrailParticleEffect(this.getPos(), Colors.BLUE, 13), this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), velo.getX() / 2, velo.getY() / 2, velo.getZ() / 2);
+        }
     }
 
     @Override

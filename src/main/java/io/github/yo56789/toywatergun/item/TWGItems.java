@@ -18,7 +18,7 @@ import java.util.function.Function;
 
 public class TWGItems {
 
-    public static final WaterGunItem WATER_GUN = register("water_gun", WaterGunItem::new, new Item.Settings());
+    public static final WaterGunItem WATER_GUN = register("water_gun", WaterGunItem::new, new Item.Settings().maxCount(1));
 
     public static final ComponentType<Integer> CHARGE_COMPONENT = Registry.register(
             Registries.DATA_COMPONENT_TYPE,

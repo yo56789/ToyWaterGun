@@ -1,6 +1,7 @@
-package io.github.yo56789.toywatergun.client;
+package io.github.yo56789.toywatergun.client.model;
 
 import io.github.yo56789.toywatergun.ToyWaterGun;
+import io.github.yo56789.toywatergun.client.TWGClient;
 import io.github.yo56789.toywatergun.entity.WaterProjectile;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,7 +21,7 @@ public class WaterProjectileRenderer extends EntityRenderer<WaterProjectile, Pro
     private final WaterProjectileModel model;
     public static final Identifier TEXTURE = Identifier.of(ToyWaterGun.MOD_ID, "textures/entity/water_projectile.png");
 
-    protected WaterProjectileRenderer(EntityRendererFactory.Context context) {
+    public WaterProjectileRenderer(EntityRendererFactory.Context context) {
         super(context);
         this.model = new WaterProjectileModel(context.getPart(TWGClient.WATER_PROJECTILE_LAYER));
     }

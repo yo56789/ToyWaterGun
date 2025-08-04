@@ -1,6 +1,8 @@
 package io.github.yo56789.toywatergun.client;
 
 import io.github.yo56789.toywatergun.ToyWaterGun;
+import io.github.yo56789.toywatergun.client.model.WaterProjectileModel;
+import io.github.yo56789.toywatergun.client.model.WaterProjectileRenderer;
 import io.github.yo56789.toywatergun.entity.TWGEntities;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;

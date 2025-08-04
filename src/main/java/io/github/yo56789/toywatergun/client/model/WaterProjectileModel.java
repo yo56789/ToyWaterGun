@@ -1,4 +1,4 @@
-package io.github.yo56789.toywatergun.client;
+package io.github.yo56789.toywatergun.client.model;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

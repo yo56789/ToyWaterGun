@@ -40,8 +40,11 @@ public abstract class ProjectileBase extends ProjectileEntity {
         this.updateRotation();
         this.tickBlockCollision();
         super.tick();
+
         if (hitResult.getType() != HitResult.Type.MISS && this.isAlive()) {
             this.onCollision(hitResult);
+        } else if (this.getWorld().isClient()) {
+            spawnParticles(this.getVelocity());
         }
     }
 
@@ -54,4 +57,6 @@ public abstract class ProjectileBase extends ProjectileEntity {
     protected void initDataTracker(DataTracker.Builder builder) {
 
     }
+
+    protected abstract void spawnParticles(Vec3d velo);
 }
