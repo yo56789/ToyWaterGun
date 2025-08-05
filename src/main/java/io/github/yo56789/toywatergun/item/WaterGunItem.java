@@ -38,7 +38,8 @@ public class WaterGunItem extends Item implements GeoItem {
     @Override
     public ActionResult use(World world, PlayerEntity player, Hand hand) {
         if (world.isClient()) {
-            return ActionResult.SUCCESS;
+            // No arm swing when
+            return ActionResult.CONSUME;
         }
 
         ItemStack stack = player.getStackInHand(hand);

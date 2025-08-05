@@ -10,13 +10,13 @@
 							"vector": [0, 0, 0]
 						},
 						"0.625": {
-							"vector": [0, 0, -1.75],
-							"easing": "easeOutSine"
+							"vector": [0, 0, -1.5],
+							"easing": "easeOutQuad"
 						},
 						"2.0": {
 							"vector": [0, 0, 0],
 							"easing": "easeInElastic",
-							"easingArgs": [1.25]
+							"easingArgs": [1]
 						}
 					}
 				}
