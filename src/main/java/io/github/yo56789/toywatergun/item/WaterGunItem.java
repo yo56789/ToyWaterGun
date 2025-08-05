@@ -4,7 +4,6 @@ import io.github.yo56789.toywatergun.client.model.WaterGunRenderer;
 import io.github.yo56789.toywatergun.entity.WaterProjectile;
 import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.*;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.world.ServerWorld;
@@ -19,6 +18,7 @@ import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
@@ -28,6 +28,10 @@ public class WaterGunItem extends Item implements GeoItem {
 
     private static final RawAnimation ACTIVATE_ANIM = RawAnimation.begin().thenPlay("water_gun.charge");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
+    public static final DataTicket<Integer> GAUGE_DEGREES = DataTicket.create("gauge_degrees", Integer.class);
+    public static final int MAX_CHARGE = 20;
+    public static final int MAX_FLUID = 1000;
 
     public WaterGunItem(Settings settings) {
         super(settings);
@@ -47,11 +51,11 @@ public class WaterGunItem extends Item implements GeoItem {
         int fluid = stack.getOrDefault(TWGItems.FLUID_COMPONENT, 0);
 
         if (player.isSneaking() && !player.getItemCooldownManager().isCoolingDown(stack)) {
-            if (stack.getOrDefault(TWGItems.CHARGE_COMPONENT,0) == 20) {
+            if (stack.getOrDefault(TWGItems.CHARGE_COMPONENT,0) == MAX_CHARGE) {
                 return ActionResult.SUCCESS;
             }
 
-            stack.set(TWGItems.CHARGE_COMPONENT, Math.clamp(charge + 4, 0, 20));
+            stack.set(TWGItems.CHARGE_COMPONENT, Math.clamp(charge + 4, 0, MAX_CHARGE));
             triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerWorld) world), "Activation", "charge");
             player.getItemCooldownManager().set(stack, 40);
 
@@ -60,13 +64,12 @@ public class WaterGunItem extends Item implements GeoItem {
 
         if (!player.getItemCooldownManager().isCoolingDown(stack) && fluid >= 25) {
             stack.set(TWGItems.FLUID_COMPONENT, fluid - 25);
-            stack.set(TWGItems.CHARGE_COMPONENT, Math.clamp(charge - 1, 0, 20));
-            ArrowItem arrow = (ArrowItem) net.minecraft.item.Items.ARROW;
+            stack.set(TWGItems.CHARGE_COMPONENT, Math.clamp(charge - 1, 0, MAX_CHARGE));
 
             WaterProjectile projectile = new WaterProjectile(world, player.getX(), player.getEyeY() - 0.10000000149011612, player.getZ());
             projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, (float) (0.35 * (charge / 4) + 0.1), 0.5f);
 
-            ProjectileEntity.spawn(projectile, (ServerWorld) world, arrow.getDefaultStack());
+            world.spawnEntity(projectile);
 
             player.getItemCooldownManager().set(stack, 5);
 
