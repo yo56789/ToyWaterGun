@@ -30,6 +30,7 @@ public class WaterGunItem extends Item implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public static final DataTicket<Integer> GAUGE_DEGREES = DataTicket.create("gauge_degrees", Integer.class);
+    public static final DataTicket<Integer> TANK_LEVEL = DataTicket.create("tank_level", Integer.class);
     public static final int MAX_CHARGE = 20;
     public static final int MAX_FLUID = 1000;
 
@@ -57,7 +58,7 @@ public class WaterGunItem extends Item implements GeoItem {
 
             stack.set(TWGItems.CHARGE_COMPONENT, Math.clamp(charge + 4, 0, MAX_CHARGE));
             triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerWorld) world), "Activation", "charge");
-            player.getItemCooldownManager().set(stack, 40);
+            player.getItemCooldownManager().set(stack, 45);
 
             return ActionResult.SUCCESS;
         }
