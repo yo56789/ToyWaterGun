@@ -2,6 +2,7 @@ package io.github.yo56789.toywatergun.client;
 
 import io.github.yo56789.toywatergun.ToyWaterGun;
 import io.github.yo56789.toywatergun.client.model.TankRenderLayer;
+import io.github.yo56789.toywatergun.client.model.TranslucentRenderLayer;
 import io.github.yo56789.toywatergun.client.model.WaterGunModel;
 import io.github.yo56789.toywatergun.item.TWGItems;
 import io.github.yo56789.toywatergun.item.WaterGunItem;
@@ -24,6 +25,7 @@ public class WaterGunRenderer extends GeoItemRenderer<WaterGunItem> {
         super(new WaterGunModel());
 
         addRenderLayer(new TankRenderLayer<>(this, Identifier.of(ToyWaterGun.MOD_ID, "textures/item/water.png")));
+        addRenderLayer(new TranslucentRenderLayer<>(this, Identifier.of(ToyWaterGun.MOD_ID, "textures/item/tank.png")));
     }
 
     @Override

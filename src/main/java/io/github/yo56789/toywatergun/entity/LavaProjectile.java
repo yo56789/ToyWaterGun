@@ -9,15 +9,17 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.particle.TrailParticleEffect;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Colors;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class LavaProjectile extends ProjectileBase {
+    private static final int ORANGE_COLOR = ColorHelper.fromFloats(1f, 1f, 0.48f, 0);
+
     public LavaProjectile(EntityType<? extends ProjectileBase> entityType, World world) {
         super(entityType, world);
     }
@@ -28,8 +30,8 @@ public class LavaProjectile extends ProjectileBase {
 
     @Override
     protected void spawnParticles(Vec3d velo) {
-        for (int i = 0; i < 5; i++) {
-            this.getWorld().addParticleClient(new TrailParticleEffect(this.getPos(), Colors.LIGHT_RED, 20), this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), velo.getX() / 3, velo.getY() / 3, velo.getZ() / 3);
+        for (int i = 0; i < 10; i++) {
+            this.getWorld().addParticleClient(new TrailParticleEffect(this.getPos(), ORANGE_COLOR, 20), this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), velo.getX() / 3, velo.getY() / 3, velo.getZ() / 3);
         }
     }
 

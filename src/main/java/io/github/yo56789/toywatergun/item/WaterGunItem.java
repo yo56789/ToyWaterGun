@@ -68,13 +68,13 @@ public class WaterGunItem extends Item implements GeoItem {
             stack.set(TWGItems.FLUID_COMPONENT, new FluidComponent(fluid.id(), fluid.mb() - 25));
             stack.set(TWGItems.CHARGE_COMPONENT, Math.clamp(charge - 1, 0, MAX_CHARGE));
 
-            if (Objects.equals(fluid.id(), "lava")) {
+            if (fluid.id().equals("lava")) {
                 LavaProjectile projectile = new LavaProjectile(world, player.getX(), player.getEyeY() - 0.10000000149011612, player.getZ());
                 projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, (float) (projectile.getMultiplier() * ((double) charge / 4) + 0.1), 0.5F);
                 projectile.setOwner(player);
 
                 world.spawnEntity(projectile);
-            } else if (Objects.equals(fluid.id(), "water")) {
+            } else if (fluid.id().equals("water")) {
                 WaterProjectile projectile = new WaterProjectile(world, player.getX(), player.getEyeY() - 0.10000000149011612, player.getZ());
                 projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, (float) (projectile.getMultiplier() * ((double) charge / 4) + 0.1), 0.5F);
                 projectile.setOwner(player);

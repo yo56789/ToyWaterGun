@@ -18,7 +18,7 @@ public class WaterGunModel extends GeoModel<WaterGunItem> {
 
     @Override
     public @Nullable RenderLayer getRenderType(GeoRenderState renderState, Identifier texture) {
-        return RenderLayer.getItemEntityTranslucentCull(texture);
+        return RenderLayer.getEntityTranslucent(texture);
     }
 
     @Override
