@@ -1,13 +1,13 @@
 package io.github.yo56789.toywatergun.item;
 
-import io.github.yo56789.toywatergun.client.model.WaterGunRenderer;
+import io.github.yo56789.toywatergun.ToyWaterGun;
+import io.github.yo56789.toywatergun.client.WaterGunRenderer;
+import io.github.yo56789.toywatergun.entity.LavaProjectile;
+import io.github.yo56789.toywatergun.entity.ProjectileBase;
 import io.github.yo56789.toywatergun.entity.WaterProjectile;
-import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
@@ -22,6 +22,7 @@ import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class WaterGunItem extends Item implements GeoItem {
@@ -30,7 +31,7 @@ public class WaterGunItem extends Item implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public static final DataTicket<Integer> GAUGE_DEGREES = DataTicket.create("gauge_degrees", Integer.class);
-    public static final DataTicket<Integer> TANK_LEVEL = DataTicket.create("tank_level", Integer.class);
+    public static final DataTicket<FluidComponent> FLUID = DataTicket.create("fluid", FluidComponent.class);
     public static final int MAX_CHARGE = 20;
     public static final int MAX_FLUID = 1000;
 
@@ -49,7 +50,7 @@ public class WaterGunItem extends Item implements GeoItem {
 
         ItemStack stack = player.getStackInHand(hand);
         int charge = stack.getOrDefault(TWGItems.CHARGE_COMPONENT, 0);
-        int fluid = stack.getOrDefault(TWGItems.FLUID_COMPONENT, 0);
+        FluidComponent fluid = stack.getOrDefault(TWGItems.FLUID_COMPONENT, TWGItems.DEFAULT_FLUID_COMPONENT);
 
         if (player.isSneaking() && !player.getItemCooldownManager().isCoolingDown(stack)) {
             if (stack.getOrDefault(TWGItems.CHARGE_COMPONENT,0) == MAX_CHARGE) {
@@ -63,14 +64,23 @@ public class WaterGunItem extends Item implements GeoItem {
             return ActionResult.SUCCESS;
         }
 
-        if (!player.getItemCooldownManager().isCoolingDown(stack) && fluid >= 25) {
-            stack.set(TWGItems.FLUID_COMPONENT, fluid - 25);
+        if (!player.getItemCooldownManager().isCoolingDown(stack) && fluid.mb() >= 25) {
+            stack.set(TWGItems.FLUID_COMPONENT, new FluidComponent(fluid.id(), fluid.mb() - 25));
             stack.set(TWGItems.CHARGE_COMPONENT, Math.clamp(charge - 1, 0, MAX_CHARGE));
 
-            WaterProjectile projectile = new WaterProjectile(world, player.getX(), player.getEyeY() - 0.10000000149011612, player.getZ());
-            projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, (float) (0.35 * (charge / 4) + 0.1), 0.5f);
+            if (Objects.equals(fluid.id(), "lava")) {
+                LavaProjectile projectile = new LavaProjectile(world, player.getX(), player.getEyeY() - 0.10000000149011612, player.getZ());
+                projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, (float) (projectile.getMultiplier() * ((double) charge / 4) + 0.1), 0.5F);
+                projectile.setOwner(player);
 
-            world.spawnEntity(projectile);
+                world.spawnEntity(projectile);
+            } else if (Objects.equals(fluid.id(), "water")) {
+                WaterProjectile projectile = new WaterProjectile(world, player.getX(), player.getEyeY() - 0.10000000149011612, player.getZ());
+                projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, (float) (projectile.getMultiplier() * ((double) charge / 4) + 0.1), 0.5F);
+                projectile.setOwner(player);
+
+                world.spawnEntity(projectile);
+            }
 
             player.getItemCooldownManager().set(stack, 5);
 
@@ -78,15 +88,6 @@ public class WaterGunItem extends Item implements GeoItem {
         }
 
         return ActionResult.SUCCESS;
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
-        int charge = stack.getOrDefault(TWGItems.CHARGE_COMPONENT, 0);
-        int remaining = stack.getOrDefault(TWGItems.FLUID_COMPONENT, 0);
-
-        textConsumer.accept(Text.translatable("item.toywatergun.water_gun.charge", charge));
-        textConsumer.accept(Text.translatable("item.toywatergun.water_gun.remaining", remaining));
     }
 
     @Override

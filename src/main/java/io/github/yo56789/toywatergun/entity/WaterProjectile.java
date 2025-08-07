@@ -3,9 +3,11 @@ package io.github.yo56789.toywatergun.entity;
 import net.minecraft.block.AbstractCandleBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.particle.TrailParticleEffect;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Colors;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -31,22 +33,29 @@ public class WaterProjectile extends ProjectileBase {
     }
 
     @Override
-    public void handleStatus(byte status) {
-        if (status == 3) {
-            // particle stuff on destroy
-        }
+    public double getMultiplier() {
+        return 0.35;
     }
 
     @Override
     protected void onEntityHit(EntityHitResult hitResult) {
+        if (!this.getWorld().isClient()) {
+            Entity entity = hitResult.getEntity();
+
+            if (entity.isOnFire() && entity.isAlive()) {
+                entity.extinguishWithSound();
+            }
+            entity.damage((ServerWorld) this.getWorld(), this.getDamageSources().indirectMagic(this, this.getOwner()), 1);
+
+            this.discard();
+        }
+
         super.onEntityHit(hitResult);
     }
 
     @Override
     protected void onBlockHit(BlockHitResult hitResult) {
         if (!this.getWorld().isClient()) {
-            this.getWorld().sendEntityStatus(this, (byte) 3);
-
             this.extinguishFire(hitResult.getBlockPos());
             this.extinguishFire(hitResult.getBlockPos().offset(hitResult.getSide()));
 

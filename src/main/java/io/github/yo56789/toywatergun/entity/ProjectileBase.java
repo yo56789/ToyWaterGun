@@ -59,4 +59,6 @@ public abstract class ProjectileBase extends ProjectileEntity {
     }
 
     protected abstract void spawnParticles(Vec3d velo);
+
+    public abstract double getMultiplier();
 }

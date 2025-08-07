@@ -1,7 +1,8 @@
-package io.github.yo56789.toywatergun.client.model;
+package io.github.yo56789.toywatergun.client;
 
 import io.github.yo56789.toywatergun.ToyWaterGun;
-import io.github.yo56789.toywatergun.client.TWGClient;
+import io.github.yo56789.toywatergun.client.model.ProjectileModel;
+import io.github.yo56789.toywatergun.entity.ProjectileBase;
 import io.github.yo56789.toywatergun.entity.WaterProjectile;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -17,13 +18,13 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
 
 @Environment(EnvType.CLIENT)
-public class WaterProjectileRenderer extends EntityRenderer<WaterProjectile, ProjectileEntityRenderState> {
-    private final WaterProjectileModel model;
-    public static final Identifier TEXTURE = Identifier.of(ToyWaterGun.MOD_ID, "textures/entity/water_projectile.png");
+public class ProjectileRenderer extends EntityRenderer<ProjectileBase, ProjectileEntityRenderState> {
+    private final ProjectileModel model;
+    public static final Identifier TEXTURE = Identifier.of(ToyWaterGun.MOD_ID, "textures/entity/projectile.png");
 
-    public WaterProjectileRenderer(EntityRendererFactory.Context context) {
+    public ProjectileRenderer(EntityRendererFactory.Context context) {
         super(context);
-        this.model = new WaterProjectileModel(context.getPart(TWGClient.WATER_PROJECTILE_LAYER));
+        this.model = new ProjectileModel(context.getPart(TWGClient.PROJECTILE_LAYER));
     }
 
     @Override
@@ -39,7 +40,7 @@ public class WaterProjectileRenderer extends EntityRenderer<WaterProjectile, Pro
     }
 
     @Override
-    public void updateRenderState(WaterProjectile projectile, ProjectileEntityRenderState state, float f) {
+    public void updateRenderState(ProjectileBase projectile, ProjectileEntityRenderState state, float f) {
         super.updateRenderState(projectile, state, f);
         state.pitch = projectile.getLerpedPitch(f);
         state.yaw = projectile.getLerpedYaw(f);

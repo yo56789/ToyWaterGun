@@ -26,11 +26,13 @@ public class TWGItems {
             ComponentType.<Integer>builder().codec(Codec.INT).build()
     );
 
-    public static final ComponentType<Integer> FLUID_COMPONENT = Registry.register(
+    public static final ComponentType<FluidComponent> FLUID_COMPONENT = Registry.register(
             Registries.DATA_COMPONENT_TYPE,
             Identifier.of(ToyWaterGun.MOD_ID, "fluid"),
-            ComponentType.<Integer>builder().codec(Codec.INT).build()
+            ComponentType.<FluidComponent>builder().codec(FluidComponent.CODEC).build()
     );
+
+    public static final FluidComponent DEFAULT_FLUID_COMPONENT = new FluidComponent("water", 0);
 
     public static <I extends Item> I register(String name, Function<Item.Settings, Item> itemFactory, Item.Settings settings) {
         RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(ToyWaterGun.MOD_ID, name));

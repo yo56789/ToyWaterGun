@@ -7,16 +7,12 @@ import net.minecraft.util.Identifier;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 import software.bernie.geckolib.renderer.base.GeoRenderer;
-import software.bernie.geckolib.renderer.layer.CustomBoneTextureGeoLayer;
+import software.bernie.geckolib.renderer.layer.TextureLayerGeoLayer;
 
 @Environment(EnvType.CLIENT)
-public class TranslucentRenderLayer<T extends GeoAnimatable, O, R extends GeoRenderState> extends CustomBoneTextureGeoLayer<T, O, R> {
-    public TranslucentRenderLayer(GeoRenderer<T, O, R> renderer, String boneName, Identifier texture) {
-        super(renderer, boneName, texture);
-    }
+public class TranslucentRenderLayer<T extends GeoAnimatable, O, R extends GeoRenderState> extends TextureLayerGeoLayer<T, O, R> {
 
-    @Override
-    protected RenderLayer getRenderType(R renderState, Identifier texture) {
-        return RenderLayer.getItemEntityTranslucentCull(texture);
+    public TranslucentRenderLayer(GeoRenderer<T, O, R> renderer, Identifier texture) {
+        super(renderer, texture, RenderLayer::getItemEntityTranslucentCull);
     }
 }

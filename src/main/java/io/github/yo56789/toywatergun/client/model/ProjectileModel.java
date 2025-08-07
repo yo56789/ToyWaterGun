@@ -7,9 +7,9 @@ import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.state.ProjectileEntityRenderState;
 
 @Environment(EnvType.CLIENT)
-public class WaterProjectileModel extends EntityModel<ProjectileEntityRenderState> {
+public class ProjectileModel extends EntityModel<ProjectileEntityRenderState> {
 
-	public WaterProjectileModel(ModelPart root) {
+	public ProjectileModel(ModelPart root) {
         super(root);
 	}
 

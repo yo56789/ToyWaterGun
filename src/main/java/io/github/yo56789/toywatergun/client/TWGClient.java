@@ -1,8 +1,7 @@
 package io.github.yo56789.toywatergun.client;
 
 import io.github.yo56789.toywatergun.ToyWaterGun;
-import io.github.yo56789.toywatergun.client.model.WaterProjectileModel;
-import io.github.yo56789.toywatergun.client.model.WaterProjectileRenderer;
+import io.github.yo56789.toywatergun.client.model.ProjectileModel;
 import io.github.yo56789.toywatergun.entity.TWGEntities;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -14,13 +13,14 @@ import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class TWGClient implements ClientModInitializer {
-    public static final EntityModelLayer WATER_PROJECTILE_LAYER = new EntityModelLayer(Identifier.of(ToyWaterGun.MOD_ID, "water_projectile"), "main");
+    public static final EntityModelLayer PROJECTILE_LAYER = new EntityModelLayer(Identifier.of(ToyWaterGun.MOD_ID, "projectile"), "main");
 
 
     @Override
     public void onInitializeClient() {
-        EntityRendererRegistry.register(TWGEntities.WATER_PROJECTILE_TYPE, WaterProjectileRenderer::new);
+        EntityRendererRegistry.register(TWGEntities.WATER_PROJECTILE_TYPE, ProjectileRenderer::new);
+        EntityRendererRegistry.register(TWGEntities.LAVA_PROJECTILE_TYPE, ProjectileRenderer::new);
 
-        EntityModelLayerRegistry.registerModelLayer(WATER_PROJECTILE_LAYER, WaterProjectileModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(PROJECTILE_LAYER, ProjectileModel::getTexturedModelData);
     }
 }
