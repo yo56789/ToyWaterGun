@@ -20,7 +20,7 @@ import net.minecraft.util.math.RotationAxis;
 @Environment(EnvType.CLIENT)
 public class ProjectileRenderer extends EntityRenderer<ProjectileBase, ProjectileEntityRenderState> {
     private final ProjectileModel model;
-    public static final Identifier TEXTURE = Identifier.of(ToyWaterGun.MOD_ID, "textures/entity/projectile.png");
+    public static final Identifier TEXTURE = Identifier.of(ToyWaterGun.MOD_ID, "textures/transparent.png");
 
     public ProjectileRenderer(EntityRendererFactory.Context context) {
         super(context);

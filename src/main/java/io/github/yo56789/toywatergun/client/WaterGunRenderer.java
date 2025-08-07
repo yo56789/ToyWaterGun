@@ -24,7 +24,7 @@ public class WaterGunRenderer extends GeoItemRenderer<WaterGunItem> {
     public WaterGunRenderer() {
         super(new WaterGunModel());
 
-        addRenderLayer(new TankRenderLayer<>(this, Identifier.of(ToyWaterGun.MOD_ID, "textures/item/water.png")));
+        addRenderLayer(new TankRenderLayer<>(this, Identifier.of(ToyWaterGun.MOD_ID, "textures/transparent.png")));
         addRenderLayer(new TranslucentRenderLayer<>(this, Identifier.of(ToyWaterGun.MOD_ID, "textures/item/tank.png")));
     }
 

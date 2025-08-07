@@ -1,6 +1,7 @@
 package io.github.yo56789.toywatergun.client.model;
 
 import io.github.yo56789.toywatergun.ToyWaterGun;
+import io.github.yo56789.toywatergun.item.FluidComponent;
 import io.github.yo56789.toywatergun.item.TWGItems;
 import io.github.yo56789.toywatergun.item.WaterGunItem;
 import net.minecraft.util.Identifier;
@@ -15,10 +16,12 @@ public class TankRenderLayer<T extends GeoAnimatable, O, R extends GeoRenderStat
 
     @Override
     protected Identifier getTextureResource(R state) {
-        String fluid = state.getOrDefaultGeckolibData(WaterGunItem.FLUID, TWGItems.DEFAULT_FLUID_COMPONENT).id();
-        if (fluid.equals("lava")) {
-            return Identifier.of(ToyWaterGun.MOD_ID, "textures/entity/projectile.png");
+        FluidComponent fluid = state.getOrDefaultGeckolibData(WaterGunItem.FLUID, TWGItems.DEFAULT_FLUID_COMPONENT);
+
+        if (fluid.mb() > 0) {
+            return Identifier.of(ToyWaterGun.MOD_ID, "textures/item/" + fluid.id() + ".png");
         }
+
         return this.texture;
     }
 }

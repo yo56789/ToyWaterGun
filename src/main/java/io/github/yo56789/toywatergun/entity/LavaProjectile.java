@@ -41,6 +41,11 @@ public class LavaProjectile extends ProjectileBase {
     }
 
     @Override
+    protected double getGravity() {
+        return 0.05;
+    }
+
+    @Override
     protected void onEntityHit(EntityHitResult hitResult) {
         if (!this.getWorld().isClient()) {
             Entity entity = hitResult.getEntity();
@@ -59,8 +64,10 @@ public class LavaProjectile extends ProjectileBase {
     @Override
     protected void onBlockHit(BlockHitResult hitResult) {
         if (!this.getWorld().isClient()) {
-            this.setFire(hitResult.getBlockPos(), hitResult.getSide());
-            this.setFire(hitResult.getBlockPos().offset(hitResult.getSide()), hitResult.getSide());
+            boolean hit = this.setFire(hitResult.getBlockPos(), hitResult.getSide());
+            if (!hit) {
+                this.setFire(hitResult.getBlockPos().offset(hitResult.getSide()), hitResult.getSide());
+            }
 
             this.discard();
         }
@@ -68,15 +75,20 @@ public class LavaProjectile extends ProjectileBase {
         super.onBlockHit(hitResult);
     }
 
-    private void setFire(BlockPos pos, Direction dir) {
+    private boolean setFire(BlockPos pos, Direction dir) {
         BlockState state = this.getWorld().getBlockState(pos);
 
         if (!AbstractCandleBlock.isLitCandle(state) && state.isIn(BlockTags.CANDLES)) {
             this.getWorld().setBlockState(pos, state.with(AbstractCandleBlock.LIT, true));
+            return true;
         } else if (!CampfireBlock.isLitCampfire(state) && state.isIn(BlockTags.CAMPFIRES)) {
             this.getWorld().setBlockState(pos, state.with(CampfireBlock.LIT, true));
+            return true;
         } else if (AbstractFireBlock.canPlaceAt(this.getWorld(), pos, dir)) {
             this.getWorld().setBlockState(pos, AbstractFireBlock.getState(this.getWorld(), pos), 11);
+            return true;
         }
+
+        return false;
     }
 }
