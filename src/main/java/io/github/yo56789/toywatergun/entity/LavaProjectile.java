@@ -31,7 +31,7 @@ public class LavaProjectile extends ProjectileBase {
     @Override
     protected void spawnParticles(Vec3d velo) {
         for (int i = 0; i < 10; i++) {
-            this.getWorld().addParticleClient(new TrailParticleEffect(this.getPos(), ORANGE_COLOR, 20), this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), velo.getX() / 3, velo.getY() / 3, velo.getZ() / 3);
+            this.getWorld().addImportantParticleClient(new TrailParticleEffect(this.getPos(), ORANGE_COLOR, 20), true, this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), velo.getX() / 3, velo.getY() / 3, velo.getZ() / 3);
         }
     }
 

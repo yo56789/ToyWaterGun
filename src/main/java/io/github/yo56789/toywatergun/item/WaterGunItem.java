@@ -1,12 +1,11 @@
 package io.github.yo56789.toywatergun.item;
 
-import io.github.yo56789.toywatergun.ToyWaterGun;
 import io.github.yo56789.toywatergun.client.WaterGunRenderer;
 import io.github.yo56789.toywatergun.entity.LavaProjectile;
-import io.github.yo56789.toywatergun.entity.ProjectileBase;
 import io.github.yo56789.toywatergun.entity.WaterProjectile;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -22,7 +21,6 @@ import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 
 public class WaterGunItem extends Item implements GeoItem {
