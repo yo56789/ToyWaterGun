@@ -8,6 +8,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.LeveledCauldronBlock;
 import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.item.Item;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,6 +31,7 @@ public interface CauldronBehaviorMixin {
 					stack.set(TWGItems.FLUID_COMPONENT, new FluidComponent("water", Math.clamp(fluid.mb() + 250, 0, WaterGunItem.MAX_FLUID)));
 
 					LeveledCauldronBlock.decrementFluidLevel(state, world, pos);
+					world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				}
 			}
 
@@ -42,6 +45,7 @@ public interface CauldronBehaviorMixin {
 					stack.set(TWGItems.FLUID_COMPONENT, new FluidComponent("lava", Math.clamp(fluid.mb() + 1000, 0, WaterGunItem.MAX_FLUID)));
 
 					world.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
+					world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				}
 			}
 
