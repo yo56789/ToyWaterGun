@@ -2,6 +2,7 @@ package io.github.yo56789.toywatergun.item;
 
 import io.github.yo56789.toywatergun.client.WaterGunRenderer;
 import io.github.yo56789.toywatergun.entity.LavaProjectile;
+import io.github.yo56789.toywatergun.entity.SnowProjectile;
 import io.github.yo56789.toywatergun.entity.WaterProjectile;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidDrainable;
@@ -10,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -81,16 +83,25 @@ public class WaterGunItem extends Item implements GeoItem {
 
             if (fluid.id().equals("lava")) {
                 LavaProjectile projectile = new LavaProjectile(world, player.getX(), player.getEyeY() - 0.10000000149011612, player.getZ());
-                projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, (float) (projectile.getMultiplier() * ((double) charge / 4) + 0.1), 0.5F);
+                projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, calculateVelocity(projectile.getMultiplier(), charge), 0.5F);
                 projectile.setOwner(player);
 
                 world.spawnEntity(projectile);
             } else if (fluid.id().equals("water")) {
                 WaterProjectile projectile = new WaterProjectile(world, player.getX(), player.getEyeY() - 0.10000000149011612, player.getZ());
-                projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, (float) (projectile.getMultiplier() * ((double) charge / 4) + 0.1), 0.5F);
+                projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, calculateVelocity(projectile.getMultiplier(), charge), 0.5F);
                 projectile.setOwner(player);
 
                 world.spawnEntity(projectile);
+            } else if (fluid.id().equals("snow")) {
+                SnowProjectile projectile = new SnowProjectile(world, player.getX(), player.getEyeY() - 0.10000000149011612, player.getZ());
+                projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, calculateVelocity(projectile.getMultiplier(), charge), 0.5F);
+                projectile.setOwner(player);
+
+                world.spawnEntity(projectile);
+
+                stack.set(TWGItems.FLUID_COMPONENT, new FluidComponent(fluid.id(), 0));
+                stack.set(TWGItems.CHARGE_COMPONENT, Math.clamp(charge - 10, 0, MAX_CHARGE));
             }
 
             player.getItemCooldownManager().set(stack, 5);
@@ -115,7 +126,7 @@ public class WaterGunItem extends Item implements GeoItem {
                             stack.set(TWGItems.FLUID_COMPONENT, new FluidComponent("snow", 1000));
                         }
 
-                        source.getBucketFillSound().ifPresent((sound) -> player.playSound(sound, 1.0f, 1.0f));
+                        source.getBucketFillSound().ifPresent((sound) -> world.playSound(null, blockPos, sound, SoundCategory.BLOCKS, 1.0F, 1.0F));
                         world.emitGameEvent(player, GameEvent.FLUID_PICKUP, blockPos);
                         return ActionResult.SUCCESS;
                     }
@@ -124,6 +135,10 @@ public class WaterGunItem extends Item implements GeoItem {
         }
 
         return ActionResult.SUCCESS;
+    }
+
+    private float calculateVelocity(double multiplier, int charge) {
+        return (float) (multiplier * ((double) charge / 4) + 0.1);
     }
 
     @Override

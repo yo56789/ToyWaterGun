@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 public class LavaProjectile extends ProjectileBase {
     private static final int ORANGE_COLOR = ColorHelper.fromFloats(1f, 1f, 0.48f, 0);
 
-    public LavaProjectile(EntityType<? extends ProjectileBase> entityType, World world) {
+    public LavaProjectile(EntityType<? extends LavaProjectile> entityType, World world) {
         super(entityType, world);
     }
 
@@ -30,14 +30,14 @@ public class LavaProjectile extends ProjectileBase {
 
     @Override
     protected void spawnParticles(Vec3d velo) {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 8; i++) {
             this.getWorld().addImportantParticleClient(new TrailParticleEffect(this.getPos(), ORANGE_COLOR, 20), true, this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), velo.getX() / 3, velo.getY() / 3, velo.getZ() / 3);
         }
     }
 
     @Override
     public double getMultiplier() {
-        return 0.2;
+        return 0.25;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class LavaProjectile extends ProjectileBase {
             Entity entity = hitResult.getEntity();
 
             if (!entity.isFireImmune()) {
-                entity.setOnFireForTicks(30);
+                entity.setOnFireForTicks(50);
             }
             entity.damage((ServerWorld) this.getWorld(), this.getDamageSources().indirectMagic(this, this.getOwner()), 4);
 

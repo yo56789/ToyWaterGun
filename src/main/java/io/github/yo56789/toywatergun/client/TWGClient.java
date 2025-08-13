@@ -20,6 +20,7 @@ public class TWGClient implements ClientModInitializer {
     public void onInitializeClient() {
         EntityRendererRegistry.register(TWGEntities.WATER_PROJECTILE_TYPE, ProjectileRenderer::new);
         EntityRendererRegistry.register(TWGEntities.LAVA_PROJECTILE_TYPE, ProjectileRenderer::new);
+        EntityRendererRegistry.register(TWGEntities.SNOW_PROJECTILE_TYPE, ProjectileRenderer::new);
 
         EntityModelLayerRegistry.registerModelLayer(PROJECTILE_LAYER, ProjectileModel::getTexturedModelData);
     }

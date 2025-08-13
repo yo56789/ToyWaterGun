@@ -27,7 +27,7 @@ public class WaterProjectile extends ProjectileBase {
 
     @Override
     protected void spawnParticles(Vec3d velo) {
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 7; i++) {
             this.getWorld().addImportantParticleClient(new TrailParticleEffect(this.getPos(), Colors.BLUE, 13), true, this.getParticleX(0.5), this.getRandomBodyY(), this.getParticleZ(0.5), velo.getX() / 2, velo.getY() / 2, velo.getZ() / 2);
         }
     }

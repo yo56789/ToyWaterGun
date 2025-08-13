@@ -17,17 +17,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
-import java.util.Objects;
 
 @Mixin(CauldronBehavior.class)
 public interface CauldronBehaviorMixin {
 	@Inject(method = "registerBehavior", at = @At("TAIL"))
-    private static void registerBehavior(CallbackInfo ci, @Local(ordinal=1) Map<Item, CauldronBehavior> water, @Local(ordinal=2) Map<Item, CauldronBehavior> lava) {
+    private static void registerBehavior(CallbackInfo ci, @Local(ordinal=1) Map<Item, CauldronBehavior> water, @Local(ordinal=2) Map<Item, CauldronBehavior> lava, @Local(ordinal=3) Map<Item, CauldronBehavior> snow) {
 		water.put(TWGItems.WATER_GUN, (state, world, pos, player, hand, stack) -> {
 			if (!world.isClient()) {
 				FluidComponent fluid = stack.getOrDefault(TWGItems.FLUID_COMPONENT, TWGItems.DEFAULT_FLUID_COMPONENT);
 
-				if ((fluid.mb() < WaterGunItem.MAX_FLUID && Objects.equals(fluid.id(), "water")) || fluid.mb() == 0) {
+				if ((fluid.mb() < WaterGunItem.MAX_FLUID && fluid.id().equals("water")) || fluid.mb() == 0) {
 					stack.set(TWGItems.FLUID_COMPONENT, new FluidComponent("water", Math.clamp(fluid.mb() + 250, 0, WaterGunItem.MAX_FLUID)));
 
 					LeveledCauldronBlock.decrementFluidLevel(state, world, pos);
@@ -41,11 +40,25 @@ public interface CauldronBehaviorMixin {
 			if (!world.isClient()) {
 				FluidComponent fluid = stack.getOrDefault(TWGItems.FLUID_COMPONENT, TWGItems.DEFAULT_FLUID_COMPONENT);
 
-				if ((fluid.mb() < WaterGunItem.MAX_FLUID && Objects.equals(fluid.id(), "lava")) || fluid.mb() == 0) {
+				if ((fluid.mb() < WaterGunItem.MAX_FLUID && fluid.id().equals("lava")) || fluid.mb() == 0) {
 					stack.set(TWGItems.FLUID_COMPONENT, new FluidComponent("lava", 1000));
 
 					world.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
 					world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				}
+			}
+
+			return ActionResult.SUCCESS;
+		});
+		snow.put(TWGItems.WATER_GUN, (state, world, pos, player, hand, stack) -> {
+			if (!world.isClient()) {
+				FluidComponent fluid = stack.getOrDefault(TWGItems.FLUID_COMPONENT, TWGItems.DEFAULT_FLUID_COMPONENT);
+
+				if (fluid.mb() == 0) {
+					stack.set(TWGItems.FLUID_COMPONENT, new FluidComponent("snow", 1000));
+
+					world.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
+					world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL_POWDER_SNOW, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				}
 			}
 
