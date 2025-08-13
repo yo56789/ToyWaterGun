@@ -42,7 +42,7 @@ public interface CauldronBehaviorMixin {
 				FluidComponent fluid = stack.getOrDefault(TWGItems.FLUID_COMPONENT, TWGItems.DEFAULT_FLUID_COMPONENT);
 
 				if ((fluid.mb() < WaterGunItem.MAX_FLUID && Objects.equals(fluid.id(), "lava")) || fluid.mb() == 0) {
-					stack.set(TWGItems.FLUID_COMPONENT, new FluidComponent("lava", Math.clamp(fluid.mb() + 1000, 0, WaterGunItem.MAX_FLUID)));
+					stack.set(TWGItems.FLUID_COMPONENT, new FluidComponent("lava", 1000));
 
 					world.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
 					world.playSound(null, pos, SoundEvents.ITEM_BUCKET_FILL_LAVA, SoundCategory.BLOCKS, 1.0F, 1.0F);
