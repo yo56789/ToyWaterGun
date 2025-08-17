@@ -2,6 +2,7 @@ package io.github.yo56789.toywatergun.item;
 
 import com.mojang.serialization.Codec;
 import io.github.yo56789.toywatergun.ToyWaterGun;
+import io.github.yo56789.toywatergun.block.TWGBlocks;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.component.ComponentType;
 import net.minecraft.item.Item;
@@ -44,13 +45,12 @@ public class TWGItems {
         return (I) item;
     }
 
-
-
     public static void init() {
         final ItemGroup GROUP = FabricItemGroup.builder()
                 .icon(() -> new ItemStack(WATER_GUN))
                 .displayName(Text.translatable("itemGroup.toywatergun"))
                 .entries((ctx, entr) -> {
+                    entr.add(TWGBlocks.CASE_BLOCK.asItem());
                     entr.add(WATER_GUN);
                 })
                 .build();

@@ -3,7 +3,6 @@ package io.github.yo56789.toywatergun.client;
 import io.github.yo56789.toywatergun.ToyWaterGun;
 import io.github.yo56789.toywatergun.client.model.ProjectileModel;
 import io.github.yo56789.toywatergun.entity.ProjectileBase;
-import io.github.yo56789.toywatergun.entity.WaterProjectile;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.OverlayTexture;
