@@ -1,0 +1,57 @@
+{
+	"format_version": "1.21.6",
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "toywatergun:block/case",
+		"particle": "toywatergun:block/case"
+	},
+	"elements": [
+		{
+			"name": "Box",
+			"from": [0, 0, 4],
+			"to": [16, 12, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 6, 8]},
+			"faces": {
+				"north": {"uv": [0, 6, 8, 12], "texture": "#0"},
+				"east": {"uv": [12, 6, 16, 12], "texture": "#0"},
+				"south": {"uv": [0, 0, 8, 6], "texture": "#0"},
+				"west": {"uv": [12, 0, 16, 6], "texture": "#0"},
+				"up": {"uv": [12, 8, 8, 0], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [12, 8, 8, 16], "rotation": 270, "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, 4.5, 0.5],
+			"scale": [0.6, 0.6, 0.6]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, 4.5, 0.5],
+			"scale": [0.6, 0.6, 0.6]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, -90, 0],
+			"translation": [-1, 3.75, 0.5],
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, -90, 0],
+			"translation": [-1, 3.75, 0.5],
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"ground": {
+			"translation": [0, 5, 0]
+		},
+		"gui": {
+			"rotation": [0, -25, 0],
+			"translation": [0, 1.5, 0],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"fixed": {
+			"rotation": [0, 180, 0],
+			"translation": [0, 2, 3]
+		}
+	}
+}

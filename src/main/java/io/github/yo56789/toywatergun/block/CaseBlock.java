@@ -1,59 +1,62 @@
 package io.github.yo56789.toywatergun.block;
 
 import com.mojang.serialization.MapCodec;
-import io.github.yo56789.toywatergun.ToyWaterGun;
 import io.github.yo56789.toywatergun.item.TWGItems;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class CaseBlock extends BlockWithEntity {
-    public static final BooleanProperty OPENED = BooleanProperty.of("opened");
+public class CaseBlock extends HorizontalFacingBlock {
+    public static final MapCodec<CaseBlock> CODEC = createCodec(CaseBlock::new);
 
     public CaseBlock(Settings settings) {
         super(settings);
-        setDefaultState(getDefaultState().with(OPENED, false));
+        setDefaultState(getDefaultState().with(FACING, Direction.NORTH));
     }
 
     @Override
-    protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (stack.isOf(TWGItems.WATER_GUN) && world.getBlockEntity(pos) instanceof CaseBlockEntity caseBlockEntity) {
-            if (caseBlockEntity.containsItem()) {
-                // Swap Items????
-                return ActionResult.FAIL;
-            }
+    protected MapCodec<? extends HorizontalFacingBlock> getCodec() {
+        return CODEC;
+    }
 
-            caseBlockEntity.addItem(stack.copyAndEmpty());
+    @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+    }
 
-            return ActionResult.SUCCESS;
+    @Override
+    protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        Direction dir = state.get(FACING);
+        return switch (dir) {
+            case NORTH, SOUTH -> VoxelShapes.cuboid(0.0f, 0.0f, 0.25f, 1.0f, 0.75f, 0.75f);
+            case EAST, WEST -> VoxelShapes.cuboid(0.25f, 0.0f, 0.0f, 0.75f, 0.75f, 1.0f);
+            default -> VoxelShapes.fullCube();
+        };
+    }
+
+    @Override
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        if (player.canModifyBlocks() && player.isSneaking()) {
+            world.setBlockState(pos, Blocks.AIR.getDefaultState());
+            ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), TWGItems.WATER_GUN.getDefaultStack());
+            return ActionResult.CONSUME;
         }
 
-        return ActionResult.PASS_TO_DEFAULT_BLOCK_ACTION;
-    }
-
-    @Override
-    protected MapCodec<? extends BlockWithEntity> getCodec() {
-        return createCodec(CaseBlock::new);
+        return ActionResult.PASS;
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(OPENED);
-    }
-
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new CaseBlockEntity(pos, state);
+        builder.add(FACING);
     }
 }

@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"facing=east": { "model": "toywatergun:block/case", "y": 270 },
+		"facing=south": { "model": "toywatergun:block/case", "y": 0 },
+		"facing=west": { "model": "toywatergun:block/case", "y": 90 },
+		"facing=north": { "model": "toywatergun:block/case", "y": 180 }
+	}
+}

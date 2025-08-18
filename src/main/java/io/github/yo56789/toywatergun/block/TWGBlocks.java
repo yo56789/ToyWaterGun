@@ -1,11 +1,8 @@
 package io.github.yo56789.toywatergun.block;
 
 import io.github.yo56789.toywatergun.ToyWaterGun;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -19,7 +16,6 @@ import java.util.function.Function;
 
 public class TWGBlocks {
     public static final CaseBlock CASE_BLOCK = register("case", CaseBlock::new, AbstractBlock.Settings.create().strength(2.0f, 2.0f).sounds(BlockSoundGroup.WOOD), new Item.Settings().maxCount(1));
-    public static final BlockEntityType<CaseBlockEntity> CASE_BLOCK_ENTITY = register("case", CaseBlockEntity::new, CASE_BLOCK);
 
     public static <I extends Block> I register(String name, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings blockSettings, Item.Settings itemSettings) {
         RegistryKey<Block> blockKey = RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(ToyWaterGun.MOD_ID, name));
@@ -30,10 +26,6 @@ public class TWGBlocks {
         Registry.register(Registries.ITEM, itemKey, new BlockItem(block, itemSettings.registryKey(itemKey)));
 
         return (I) block;
-    }
-
-    public static <I extends BlockEntity>BlockEntityType<I> register(String name, FabricBlockEntityTypeBuilder.Factory<? extends I> entityFactory, Block block) {
-        return Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(ToyWaterGun.MOD_ID, name), FabricBlockEntityTypeBuilder.<I>create(entityFactory, block).build());
     }
 
     public static void init() {
