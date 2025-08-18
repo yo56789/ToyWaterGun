@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" # ",
+		"cCc",
+		"  i"
+	],
+	"key": {
+		"#": "minecraft:bucket",
+		"c": "minecraft:copper_ingot",
+		"C": "minecraft:copper_block",
+		"i": "minecraft:iron_ingot"
+	},
+	"result": {
+		"id": "toywatergun:case",
+		"count": 1
+	}
+}

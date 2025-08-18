@@ -5,6 +5,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.particle.TrailParticleEffect;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Colors;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -54,12 +56,15 @@ public class SnowProjectile extends ProjectileBase {
 
     @Override
     protected void onBlockHit(BlockHitResult hitResult) {
-        if (!this.getWorld().isClient()) {
-            boolean hit = this.setBlock(hitResult.getBlockPos());
-            if (!hit) {
-                this.setBlock(hitResult.getBlockPos().offset(hitResult.getSide()));
+        if (!this.getWorld().isClient() && hasPermission()) {
+            if (hasPermission()) {
+                boolean hit = this.setBlock(hitResult.getBlockPos());
+                if (!hit) {
+                    this.setBlock(hitResult.getBlockPos().offset(hitResult.getSide()));
+                }
             }
 
+            this.getWorld().playSound(null, hitResult.getBlockPos(), SoundEvents.BLOCK_SNOW_HIT, SoundCategory.BLOCKS, 1.0f, 1.0f);
             this.discard();
         }
 

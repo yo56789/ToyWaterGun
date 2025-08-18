@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -104,6 +105,7 @@ public class WaterGunItem extends Item implements GeoItem {
                 stack.set(TWGItems.CHARGE_COMPONENT, Math.clamp(charge - 10, 0, MAX_CHARGE));
             }
 
+            world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_FIREWORK_ROCKET_LAUNCH, SoundCategory.PLAYERS, 0.77f, 2f);
             player.getItemCooldownManager().set(stack, 5);
 
             return ActionResult.SUCCESS;
@@ -111,7 +113,7 @@ public class WaterGunItem extends Item implements GeoItem {
 
         // Bucket style refill
         BlockHitResult hitResult = raycast(world, player, RaycastContext.FluidHandling.SOURCE_ONLY);
-        if (hitResult.getType() == HitResult.Type.BLOCK) {
+        if (player.canModifyBlocks() && (hitResult.getType() == HitResult.Type.BLOCK)) {
             BlockPos blockPos = hitResult.getBlockPos();
             if (world.canEntityModifyAt(player, blockPos) && player.canPlaceOn(blockPos.offset(hitResult.getSide()), hitResult.getSide(), stack)) {
                 BlockState state = world.getBlockState(blockPos);

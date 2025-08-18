@@ -4,7 +4,6 @@ import io.github.yo56789.toywatergun.block.TWGBlocks;
 import io.github.yo56789.toywatergun.entity.TWGEntities;
 import io.github.yo56789.toywatergun.item.TWGItems;
 import net.fabricmc.api.ModInitializer;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

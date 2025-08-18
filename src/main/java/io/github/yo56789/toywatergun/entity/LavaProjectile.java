@@ -9,6 +9,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.particle.TrailParticleEffect;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -64,11 +66,14 @@ public class LavaProjectile extends ProjectileBase {
     @Override
     protected void onBlockHit(BlockHitResult hitResult) {
         if (!this.getWorld().isClient()) {
-            boolean hit = this.setFire(hitResult.getBlockPos(), hitResult.getSide());
-            if (!hit) {
-                this.setFire(hitResult.getBlockPos().offset(hitResult.getSide()), hitResult.getSide());
+            if (hasPermission()) {
+                boolean hit = this.setFire(hitResult.getBlockPos(), hitResult.getSide());
+                if (!hit) {
+                    this.setFire(hitResult.getBlockPos().offset(hitResult.getSide()), hitResult.getSide());
+                }
             }
 
+            this.getWorld().playSound(null, hitResult.getBlockPos(), SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 1.0f, 0.72f);
             this.discard();
         }
 
@@ -79,14 +84,11 @@ public class LavaProjectile extends ProjectileBase {
         BlockState state = this.getWorld().getBlockState(pos);
 
         if (!AbstractCandleBlock.isLitCandle(state) && state.isIn(BlockTags.CANDLES)) {
-            this.getWorld().setBlockState(pos, state.with(AbstractCandleBlock.LIT, true));
-            return true;
+            return this.getWorld().setBlockState(pos, state.with(AbstractCandleBlock.LIT, true));
         } else if (!CampfireBlock.isLitCampfire(state) && state.isIn(BlockTags.CAMPFIRES)) {
-            this.getWorld().setBlockState(pos, state.with(CampfireBlock.LIT, true));
-            return true;
+            return this.getWorld().setBlockState(pos, state.with(CampfireBlock.LIT, true));
         } else if (AbstractFireBlock.canPlaceAt(this.getWorld(), pos, dir)) {
-            this.getWorld().setBlockState(pos, AbstractFireBlock.getState(this.getWorld(), pos), 11);
-            return true;
+            return this.getWorld().setBlockState(pos, AbstractFireBlock.getState(this.getWorld(), pos), 11);
         }
 
         return false;

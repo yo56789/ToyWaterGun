@@ -2,6 +2,7 @@ package io.github.yo56789.toywatergun.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.util.hit.HitResult;
@@ -55,7 +56,13 @@ public abstract class ProjectileBase extends ProjectileEntity {
 
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
+    }
 
+    protected boolean hasPermission() {
+        if (this.getOwner() instanceof PlayerEntity player) {
+            return player.canModifyBlocks();
+        }
+        return false;
     }
 
     protected abstract void spawnParticles(Vec3d velo);

@@ -8,6 +8,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.particle.TrailParticleEffect;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Colors;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
@@ -56,9 +58,12 @@ public class WaterProjectile extends ProjectileBase {
     @Override
     protected void onBlockHit(BlockHitResult hitResult) {
         if (!this.getWorld().isClient()) {
-            this.extinguishFire(hitResult.getBlockPos());
-            this.extinguishFire(hitResult.getBlockPos().offset(hitResult.getSide()));
+            if (hasPermission()) {
+                this.extinguishFire(hitResult.getBlockPos());
+                this.extinguishFire(hitResult.getBlockPos().offset(hitResult.getSide()));
+            }
 
+            this.getWorld().playSound(null, hitResult.getBlockPos(), SoundEvents.BLOCK_CANDLE_EXTINGUISH, SoundCategory.BLOCKS, 1f, 1.36f);
             this.discard();
         }
 
