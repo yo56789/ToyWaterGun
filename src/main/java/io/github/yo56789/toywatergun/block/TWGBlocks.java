@@ -15,7 +15,7 @@ import net.minecraft.util.Identifier;
 import java.util.function.Function;
 
 public class TWGBlocks {
-    public static final CaseBlock CASE_BLOCK = register("case", CaseBlock::new, AbstractBlock.Settings.create().strength(2.0f, 2.0f).sounds(BlockSoundGroup.WOOD), new Item.Settings().maxCount(1));
+    public static final CaseBlock CASE_BLOCK = register("case", CaseBlock::new, AbstractBlock.Settings.create().strength(2.0f, 2.0f).sounds(BlockSoundGroup.WOOD), new Item.Settings().maxCount(1).useBlockPrefixedTranslationKey());
 
     public static <I extends Block> I register(String name, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings blockSettings, Item.Settings itemSettings) {
         RegistryKey<Block> blockKey = RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(ToyWaterGun.MOD_ID, name));

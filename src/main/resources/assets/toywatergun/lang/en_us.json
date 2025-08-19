@@ -2,6 +2,6 @@
 	"item.toywatergun.water_gun": "Toy Water Gun",
 	"item.toywatergun.water_gun.charge": "Charge: %s",
 	"item.toywatergun.water_gun.remaining": "Remaining: %s mb",
-	"item.toywatergun.case": "Water Gun Box",
+	"block.toywatergun.case": "Water Gun Box",
 	"itemGroup.toywatergun": "Toy Water Gun"
 }
