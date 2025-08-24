@@ -3,5 +3,8 @@
 	"item.toywatergun.water_gun.charge": "Charge: %s",
 	"item.toywatergun.water_gun.remaining": "Remaining: %s mb",
 	"block.toywatergun.case": "Water Gun Box",
+	"entity.toywatergun.water_projectile": "Water Projectile",
+	"entity.toywatergun.lava_projectile": "Lava Projectile",
+	"entity.toywatergun.snow_projectile": "Powder Snow Projectile",
 	"itemGroup.toywatergun": "Toy Water Gun"
 }

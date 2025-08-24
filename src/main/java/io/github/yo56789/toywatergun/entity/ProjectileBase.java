@@ -62,7 +62,8 @@ public abstract class ProjectileBase extends ProjectileEntity {
         if (this.getOwner() instanceof PlayerEntity player) {
             return player.canModifyBlocks();
         }
-        return false;
+
+        return true;
     }
 
     protected abstract void spawnParticles(Vec3d velo);
